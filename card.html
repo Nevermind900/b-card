@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Special Birthday Wish</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #080808;
+    color: #f5e8c5;
+    font-family: Georgia, serif;
+    overflow-x: hidden;
+}
+
+/* Background atmosphere */
+
+.background {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 40%,
+        #302311 0%, #100e0a 45%, #050505 100%);
+    z-index: -2;
+}
+
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #d9b96e;
+    border-radius: 50%;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .15; transform: scale(.7); }
+    to { opacity: .9; transform: scale(1.5); }
+}
+
+/* Opening screen */
+
+.intro {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.intro.hide {
+    opacity: 0;
+    transform: translateY(-40px);
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+}
+
+.small-title {
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: #c9a75d;
+    font-size: 11px;
+    margin-bottom: 35px;
+}
+
+.envelope {
+    width: 190px;
+    height: 130px;
+    border: 1px solid #c9a75d;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 45px;
+    box-shadow: 0 0 45px #c9a75d22;
+    animation: float 3s ease-in-out infinite;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 0;
+    height: 0;
+    border-left: 95px solid transparent;
+    border-right: 95px solid transparent;
+    border-top: 70px solid #a98745;
+    transform-origin: top;
+    opacity: .85;
+}
+
+.envelope span {
+    font-size: 42px;
+    color: #e5c77d;
+    z-index: 1;
+    margin-top: 35px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.intro h1 {
+    font-size: clamp(30px, 7vw, 52px);
+    font-weight: normal;
+    color: #f5e8c5;
+    margin-bottom: 15px;
+}
+
+.intro p {
+    color: #a99c80;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 35px;
+}
+
+button {
+    padding: 15px 35px;
+    background: linear-gradient(135deg, #e9d49b, #a77c35);
+    border: none;
+    color: #100d07;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: .3s;
+}
+
+button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px #d9b96e44;
+}
+
+/* Birthday card */
+
+.card-section {
+    min-height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 18px;
+}
+
+.card-section.show {
+    display: flex;
+    animation: appear 1.5s ease forwards;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    width: 100%;
+    max-width: 700px;
+    padding: clamp(30px, 7vw, 65px);
+    text-align: center;
+    position: relative;
+    background: linear-gradient(145deg,
+        #17130c, #090909, #17130c);
+    border: 1px solid #a98745;
+    box-shadow: 0 0 70px #c9a75d15;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid #a987453f;
+    pointer-events: none;
+}
+
+.top-label {
+    color: #c9a75d;
+    font-family: Arial, sans-serif;
+    letter-spacing: 5px;
+    font-size: 10px;
+    margin-bottom: 35px;
+}
+
+.card h1 {
+    font-size: clamp(38px, 8vw, 65px);
+    font-weight: normal;
+    line-height: 1.2;
+    color: #e8d19b;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    font-size: clamp(24px, 5vw, 35px);
+    font-weight: normal;
+    color: #fff0ce;
+    margin-bottom: 30px;
+}
+
+.gold-line {
+    width: 75px;
+    height: 1px;
+    background: #c9a75d;
+    margin: 25px auto;
+}
+
+.message {
+    color: #d0c5ae;
+    font-size: clamp(15px, 3vw, 18px);
+    line-height: 2;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1s ease;
+}
+
+.message.reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.closing {
+    color: #e8d19b;
+    font-size: clamp(20px, 4vw, 27px);
+    font-style: italic;
+    margin-top: 35px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 1.5s ease;
+}
+
+.closing.reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.signature {
+    margin-top: 45px;
+    font-family: Arial, sans-serif;
+    color: #a98745;
+    letter-spacing: 4px;
+    font-size: 10px;
+}
+
+/* Floating golden particles */
+
+.particle {
+    position: fixed;
+    top: -10px;
+    width: 4px;
+    height: 4px;
+    background: #d9b96e;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fall linear forwards;
+    z-index: 10;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Mobile */
+
+@media(max-width: 500px) {
+    .card {
+        padding: 45px 25px;
+    }
+
+    .small-title {
+        letter-spacing: 4px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="stars" id="stars"></div>
+
+<!-- Opening screen -->
+
+<section class="intro" id="intro">
+
+    <div class="small-title">
+        A special message awaits
+    </div>
+
+    <div class="envelope">
+        <span>01</span>
+    </div>
+
+    <h1>A Little Surprise</h1>
+
+    <p>
+        Someone special deserves something beautiful.
+    </p>
+
+    <button onclick="openCard()">
+        Open Your Card
+    </button>
+
+</section>
+
+
+<!-- Birthday card -->
+
+<section class="card-section" id="cardSection">
+
+    <div class="card">
+
+        <div class="top-label">
+            A CELEBRATION OF YOU
+        </div>
+
+        <h1>Happy Birthday</h1>
+
+        <div class="gold-line"></div>
+
+        <h2>Dear Mommy,</h2>
+
+        <p class="message" id="message1">
+            Today is a special reminder of how precious
+            you are and how much you mean to those
+            whose lives you have touched.
+        </p>
+
+        <p class="message" id="message2">
+            Your kindness, love, strength and sacrifices
+            deserve to be celebrated not just today,
+            but every single day.
+        </p>
+
+        <p class="message" id="message3">
+            May this new chapter of your life bring you
+            happiness, good health, peace, endless
+            blessings and beautiful moments.
+        </p>
+
+        <p class="message" id="message4">
+            May every dream in your heart find its way
+            into reality, and may life always give you
+            reasons to smile.
+        </p>
+
+        <div class="gold-line"></div>
+
+        <p class="closing" id="closing">
+            Sorry for the late wish, Mommy.
+            You are always loved and appreciated.
+        </p>
+
+        <div class="signature">
+            WITH LOVE, ALWAYS
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+// Create the background stars
+
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+
+    star.className = "star";
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+
+    stars.appendChild(star);
+}
+
+
+// Golden particle animation
+
+function createParticles() {
+
+    for (let i = 0; i < 65; i++) {
+
+        const particle = document.createElement("div");
+
+        particle.className = "particle";
+
+        particle.style.left = Math.random() * 100 + "vw";
+
+        particle.style.animationDuration =
+            (3 + Math.random() * 5) + "s";
+
+        particle.style.animationDelay =
+            Math.random() * 3 + "s";
+
+        document.body.appendChild(particle);
+
+        setTimeout(() => {
+            particle.remove();
+        }, 9000);
+    }
+}
+
+
+// Open the birthday card
+
+function openCard() {
+
+    const intro = document.getElementById("intro");
+    const card = document.getElementById("cardSection");
+
+    intro.classList.add("hide");
+
+    setTimeout(() => {
+
+        intro.style.display = "none";
+
+        card.classList.add("show");
+
+        createParticles();
+
+        // Reveal birthday messages one by one
+
+        const messages = [
+            "message1",
+            "message2",
+            "message3",
+            "message4"
+        ];
+
+        messages.forEach((id, index) => {
+
+            setTimeout(() => {
+
+                document.getElementById(id)
+                    .classList.add("reveal");
+
+            }, 1300 + index * 1800);
+
+        });
+
+
+        // Reveal the final birthday message
+
+        setTimeout(() => {
+
+            document.getElementById("closing")
+                .classList.add("reveal");
+
+            createParticles();
+
+        }, 9500);
+
+    }, 1000);
+
+}
+
+</script>
+
+</body>
+</html>
